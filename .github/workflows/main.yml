@@ -1,0 +1,58 @@
+name: Ubuntu Full SSHX Terminal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Update Ubuntu
+        run: |
+          sudo apt-get update
+
+      - name: Install Ubuntu Tools
+        run: |
+          sudo apt-get install -y \
+            curl wget git nano vim \
+            zip unzip jq htop tmux \
+            python3 python3-pip python3-venv \
+            build-essential docker.io \
+            docker-compose-v2 \
+            fastfetch
+
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Start Docker
+        run: |
+          sudo systemctl start docker
+
+      - name: Verify Tools
+        run: |
+          echo "===== NODE.JS ====="
+          node --version
+          echo "===== NPM ====="
+          npm --version
+          echo "===== PYTHON ====="
+          python3 --version
+          echo "===== DOCKER ====="
+          sudo docker version
+          echo "===== SUDO ====="
+          sudo whoami
+
+      - name: Fastfetch
+        run: |
+          fastfetch
+
+      - name: Start SSHX Terminal
+        run: |
+          curl -sSf https://sshx.io/get | sh -s run
+          

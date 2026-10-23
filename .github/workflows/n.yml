@@ -1,0 +1,23 @@
+name: Ubuntu Terminal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Update Ubuntu
+        run: |
+          sudo apt update
+
+      - name: Install Sudo
+        run: |
+          sudo apt install -y sudo
+
+      - name: Start SSHX
+        run: |
+          curl -sSf https://sshx.io/get | sh -s run
+          
